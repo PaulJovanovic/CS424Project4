@@ -18,10 +18,13 @@ PVector lastTouchPos = new PVector();;
 
 Flickable timeline;
 Flickable timeline_sub;
+Flickable text_messages;
 
 float friction = 31.0/32.0;
 
 int oldTimelineSelected;
+
+color bg_color = #17191A;
 
 public void init() {
   super.init();
@@ -65,22 +68,36 @@ void setup(){
   }
   timeline_sub = new Flickable(timelineOptionSub, timeline.left - 240 * scaleFactor, 0, timeline.left, 3*dHeight/8, 4f, #1F2224);
   
+  
+  ArrayList<TextMessageOption> textMessageOptions = new ArrayList<TextMessageOption>();
+  for(int i = 0; i < 10; ++i){
+    textMessageOptions.add(new TextMessageOption(i + "", new ArrayList()));
+  }
+  text_messages = new Flickable(textMessageOptions, 40*scaleFactor, 80*scaleFactor, timeline_sub.left - 40 * scaleFactor, dHeight - 40*scaleFactor, 4f, #45040F);
+  
+  
   font = createFont("Helvetica", 48);
   textFont(font);
   rectMode(CORNERS);
-  strokeWeight(1);
+  strokeWeight(scaleFactor);
   stroke(#7C8387);
   smooth();
 }
 
 void draw(){
-  background(#17191A);
+  background(bg_color);
+  strokeWeight(scaleFactor);
   fill(240);
   textAlign(LEFT);
-  textSize(32*scaleFactor);
-  text("Something Cool", 40*scaleFactor, 50*scaleFactor);
+  text_messages.drawF();
+  fill(bg_color);
+  strokeWeight(0);
+  rect(text_messages.left-scaleFactor, 0, text_messages.right+scaleFactor, text_messages.top);
+  rect(text_messages.left-scaleFactor, text_messages.bottom, text_messages.right+scaleFactor, dHeight);
+  strokeWeight(scaleFactor);
   fill(240);
-  rect(40*scaleFactor, 80*scaleFactor, timeline.left - 280*scaleFactor, dHeight - 40*scaleFactor);
+  textSize(32*scaleFactor);
+  text("Good Stuff Greg", 40*scaleFactor, 50*scaleFactor);
   drawTimeline();
   omicronManager.process();
 }
@@ -136,6 +153,7 @@ void touchDown(int ID, float xPos, float yPos, float xWidth, float yWidth){
   lastTouchPos.y = yPos;
   timeline.moving = timeline.touched(xPos, yPos);
   timeline_sub.moving = timeline_sub.touched(xPos, yPos);
+  text_messages.moving = text_messages.touched(xPos, yPos);
   // Add a new touch ID to the list
 //  Touch t = new Touch( ID, xPos, yPos, xWidth, yWidth );
 //  touchList.put(ID,t);
@@ -151,4 +169,5 @@ void touchUp(int ID, float xPos, float yPos, float xWidth, float yWidth){
   lastTouchPos.y = yPos;
   timeline.moving = false;
   timeline_sub.moving = false;
+  text_messages.moving = false;
 }

@@ -82,7 +82,7 @@ public class Flickable {
     text("FLICK\nZONE", left + w/2, top + 11*h/24); 
     for (int i = 0; i < elements.size(); i++){
       if(elementsTop.get(i) > top - rectHeight && elementsTop.get(i) < bottom){
-        if(dist(left, elementsTop.get(i), left, 0) < rectHeight/2){
+        if(dist(left, elementsTop.get(i), left, top) < rectHeight/2){
           selected = i;
         }
         boolean currentOption = false;
@@ -107,8 +107,8 @@ public class Flickable {
   private void saveIt(){
     //Pull back into list bounds
     if(elements.size() > 0){
-      if (elementsTop.get(elements.size()-1) < 0){
-        float temp = -1 * elementsTop.get(elements.size() - 1);
+      if (elementsTop.get(elements.size()-1) < top){
+        float temp = top - elementsTop.get(elements.size() - 1);
         for(int i = 0; i < elements.size(); i++){
           if (temp < 2){
             elementsTop.set(i, elementsTop.get(i) + temp); 
@@ -118,8 +118,8 @@ public class Flickable {
           }
         }
       }
-      if (elementsTop.get(0) > 0){
-        float temp = elementsTop.get(0);
+      if (elementsTop.get(0) > top){
+        float temp = elementsTop.get(0) - top;
         for(int i = 0; i < elements.size(); i++){
           if (temp < 2){
             elementsTop.set(i, elementsTop.get(i) - temp); 
