@@ -14,17 +14,22 @@ int dWidth, dHeight;
 
 PFont font;
 
-PVector lastTouchPos = new PVector();;
+PVector lastTouchPos = new PVector();
+PImage v_map;
 
 Flickable timeline;
 Flickable timeline_sub;
 Flickable text_messages;
 
-float friction = 31.0/32.0;
+//float imageScale = 10.04924;
+
+float friction = 63.0/64.0;
 
 int oldTimelineSelected;
 
+color stroke_color = #7C8387;
 color bg_color = #17191A;
+HashMap<Integer, Integer> category_colors = new HashMap<Integer, Integer>();
 
 public void init() {
   super.init();
@@ -54,50 +59,68 @@ void setup(){
     for(int j = 0; j < i; j++){
       somethingElse.add(j+"");
     }
-    something.add(new TimelineOption(i + "", somethingElse));
+    something.add(new TimelineOption(i + "", i, somethingElse));
   }
   timeline = new Flickable(something, dWidth - 300 * scaleFactor, 0, dWidth, dHeight, 8f, #263A42);
   
   oldTimelineSelected = timeline.selected;
   
-  
-  FlickableOption temp = timeline.getSelected();
   ArrayList<TimelineSubOption> timelineOptionSub = new ArrayList<TimelineSubOption>();
-  for(int i = 0; i < temp.listing.size(); ++i){
-    timelineOptionSub.add(new TimelineSubOption(i + "", new ArrayList()));
+  for(int i = 0; i < 23; ++i){
+    timelineOptionSub.add(new TimelineSubOption(i + "", i, new ArrayList()));
   }
   timeline_sub = new Flickable(timelineOptionSub, timeline.left - 240 * scaleFactor, 0, timeline.left, 3*dHeight/8, 4f, #1F2224);
   
   
   ArrayList<TextMessageOption> textMessageOptions = new ArrayList<TextMessageOption>();
   for(int i = 0; i < 10; ++i){
-    textMessageOptions.add(new TextMessageOption(i + "", new ArrayList()));
+    textMessageOptions.add(new TextMessageOption(i + "", i, new ArrayList()));
   }
-  text_messages = new Flickable(textMessageOptions, 40*scaleFactor, 80*scaleFactor, timeline_sub.left - 40 * scaleFactor, dHeight - 40*scaleFactor, 4f, #45040F);
+  text_messages = new Flickable(textMessageOptions, 20*scaleFactor, 40*scaleFactor, timeline_sub.left - 20 * scaleFactor, dHeight - 20*scaleFactor, 4f, #360D0C);
   
+  
+  for(int i = 0; i < 23; i++){
+    category_colors.put((Integer)i, 255/23*i);
+  }
+  v_map = loadImage("map.png");
+  float imageScale = v_map.height / text_messages.h;
+  v_map.resize(Math.round(v_map.width/imageScale), Math.round(v_map.height/imageScale));
   
   font = createFont("Helvetica", 48);
   textFont(font);
   rectMode(CORNERS);
   strokeWeight(scaleFactor);
-  stroke(#7C8387);
+  stroke(stroke_color);
   smooth();
 }
 
 void draw(){
   background(bg_color);
   strokeWeight(scaleFactor);
-  fill(240);
-  textAlign(LEFT);
-  text_messages.drawF();
+  if(false){
+    text_messages.drawF();
+  }
+  else{
+    image(v_map, text_messages.left, text_messages.top);
+    fill(#360D0C);
+    rect(text_messages.left + v_map.width, text_messages.top, text_messages.left + text_messages.w, text_messages.bottom);
+    float spacing = 10*scaleFactor;
+    float buttonWidth = text_messages.w - v_map.width - 2*spacing;
+    float buttonHeight = (text_messages.h - 5 * spacing) / 4;
+    for (int i = 0; i < 4; ++i){
+      fill(240);
+      rect(text_messages.left + v_map.width + spacing, text_messages.top + spacing*(i+1) + buttonHeight*i, text_messages.left + v_map.width + spacing + buttonWidth, text_messages.top + spacing*(i+1) + buttonHeight*(i+1));
+    }
+    //Weather
+    //Population
+    //Trends
+    //Texts
+  }
   fill(bg_color);
   strokeWeight(0);
   rect(text_messages.left-scaleFactor, 0, text_messages.right+scaleFactor, text_messages.top);
   rect(text_messages.left-scaleFactor, text_messages.bottom, text_messages.right+scaleFactor, dHeight);
   strokeWeight(scaleFactor);
-  fill(240);
-  textSize(32*scaleFactor);
-  text("Good Stuff Greg", 40*scaleFactor, 50*scaleFactor);
   drawTimeline();
   omicronManager.process();
 }
@@ -109,14 +132,6 @@ void drawTimeline(){
 }
 
 void drawTimelineSub(){
-  if(timeline.selected != oldTimelineSelected){
-    oldTimelineSelected = timeline.selected;
-    FlickableOption temp = timeline.getSelected();
-    timeline_sub.clearElements();
-    for(int i = 0; i < temp.listing.size(); ++i){
-      timeline_sub.addElement(new TimelineSubOption(i + "", new ArrayList()));
-    }
-  }
   timeline_sub.drawF();
 }
 

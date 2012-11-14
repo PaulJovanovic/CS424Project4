@@ -1,8 +1,10 @@
 public class FlickableOption {
   String display;
   ArrayList listing = new ArrayList();
-  public FlickableOption(String d, ArrayList l) {
+  int id;
+  public FlickableOption(String d, int id, ArrayList l) {
     this.display = d;
+    this.id = id;
     for(int i = 0; i < l.size(); ++i){
       listing.add(l.get(i));
     }
