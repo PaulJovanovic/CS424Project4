@@ -66,7 +66,7 @@ void setup(){
   oldTimelineSelected = timeline.selected;
   
   ArrayList<TimelineSubOption> timelineOptionSub = new ArrayList<TimelineSubOption>();
-  for(int i = 0; i < 23; ++i){
+  for(int i = 0; i < 12; ++i){
     timelineOptionSub.add(new TimelineSubOption(i + "", i, new ArrayList()));
   }
   timeline_sub = new Flickable(timelineOptionSub, timeline.left - 240 * scaleFactor, 0, timeline.left, 3*dHeight/8, 4f, #1F2224);
@@ -79,9 +79,19 @@ void setup(){
   text_messages = new Flickable(textMessageOptions, 20*scaleFactor, 40*scaleFactor, timeline_sub.left - 20 * scaleFactor, dHeight - 20*scaleFactor, 4f, #360D0C);
   
   
-  for(int i = 0; i < 23; i++){
-    category_colors.put((Integer)i, 255/23*i);
-  }
+  category_colors.put(0, #911616);
+  category_colors.put(1, #249116);
+  category_colors.put(2, #161691);
+  category_colors.put(3, #831691);
+  category_colors.put(4, #918F16);
+  category_colors.put(5, #915C16);
+  category_colors.put(6, #FA2626);
+  category_colors.put(7, #3EFA26);
+  category_colors.put(8, #2626FA);
+  category_colors.put(9, #E226FA);
+  category_colors.put(10, #FAF626);
+  category_colors.put(11, #FA9F26);
+  
   v_map = loadImage("map.png");
   float imageScale = v_map.height / text_messages.h;
   v_map.resize(Math.round(v_map.width/imageScale), Math.round(v_map.height/imageScale));
