@@ -61,7 +61,7 @@ void setup(){
     }
     something.add(new TimelineOption(i + "", i, somethingElse));
   }
-  timeline = new Flickable(something, dWidth - 300 * scaleFactor, 0, dWidth, dHeight, 8f, #263A42);
+  timeline = new Flickable(something, dWidth - 240 * scaleFactor, 0, dWidth, dHeight, 8f, #021A24);
   
   oldTimelineSelected = timeline.selected;
   
@@ -69,7 +69,7 @@ void setup(){
   for(int i = 0; i < 12; ++i){
     timelineOptionSub.add(new TimelineSubOption(i + "", i, new ArrayList()));
   }
-  timeline_sub = new Flickable(timelineOptionSub, timeline.left - 240 * scaleFactor, 0, timeline.left, 3*dHeight/8, 4f, #1F2224);
+  timeline_sub = new Flickable(timelineOptionSub, timeline.left - 300 * scaleFactor, 0, timeline.left, 3*dHeight/8, 4f, #1F2224);
   
   
   ArrayList<TextMessageOption> textMessageOptions = new ArrayList<TextMessageOption>();
@@ -81,13 +81,13 @@ void setup(){
   
   category_colors.put(0, #911616);
   category_colors.put(1, #249116);
-  category_colors.put(2, #161691);
+  category_colors.put(2, #165E91);
   category_colors.put(3, #831691);
   category_colors.put(4, #918F16);
   category_colors.put(5, #915C16);
   category_colors.put(6, #FA2626);
   category_colors.put(7, #3EFA26);
-  category_colors.put(8, #2626FA);
+  category_colors.put(8, #26A2FA);
   category_colors.put(9, #E226FA);
   category_colors.put(10, #FAF626);
   category_colors.put(11, #FA9F26);
@@ -119,7 +119,7 @@ void draw(){
     float buttonHeight = (text_messages.h - 5 * spacing) / 4;
     for (int i = 0; i < 4; ++i){
       fill(240);
-      rect(text_messages.left + v_map.width + spacing, text_messages.top + spacing*(i+1) + buttonHeight*i, text_messages.left + v_map.width + spacing + buttonWidth, text_messages.top + spacing*(i+1) + buttonHeight*(i+1));
+      rect(text_messages.left + v_map.width + spacing, text_messages.top + spacing*(i+1) + buttonHeight*i, text_messages.left + v_map.width + spacing + buttonWidth, text_messages.top + spacing*(i+1) + buttonHeight*(i+1), 2*scaleFactor);
     }
     //Weather
     //Population
@@ -146,7 +146,7 @@ void drawTimelineSub(){
 }
 
 void drawWordlist(){
-  fill(#17191A);
+  fill(#263A42);
   rect(timeline_sub.left, timeline_sub.bottom, timeline_sub.right, dHeight);
   
   float textXOffset = 10 * scaleFactor;

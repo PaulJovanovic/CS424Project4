@@ -19,14 +19,14 @@ public class TimelineOption extends FlickableOption {
     for(int i = 0; i < listing.size() && i < 12; i++){
       if(timeline_sub.selected != i){
         stroke(stroke_color);
-        fill(color(category_colors.get(i), 120));
+        fill(color(category_colors.get(i), 60));
         rect(left + h/4 + i*h/4, top + 5*h/8, left + h/2 + i*h/4, top + 7*h/8);
       }
     }
     if (listing.size() > timeline_sub.selected){
       stroke(#FF6600);
       fill(color(category_colors.get(timeline_sub.selected), 255));
-      rect(left + h/4 + timeline_sub.selected*h/4, top + 5*h/8 - h/8, left + h/2 + timeline_sub.selected*h/4 + h/8, top + 7*h/8);
+      rect(left + h/8 + timeline_sub.selected*h/4, top + h/2 - h/8, left + h/2 + timeline_sub.selected*h/4 + h/8, top + 7*h/8);
     }
     stroke(stroke_color);
   }
