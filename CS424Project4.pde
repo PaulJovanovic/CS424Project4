@@ -17,6 +17,8 @@ PFont font;
 PVector lastTouchPos = new PVector();
 PImage v_map;
 
+
+//Flickable menus
 Flickable timeline;
 Flickable timeline_sub;
 Flickable text_messages;
@@ -30,6 +32,13 @@ int oldTimelineSelected;
 color stroke_color = #7C8387;
 color bg_color = #17191A;
 HashMap<Integer, Integer> category_colors = new HashMap<Integer, Integer>();
+
+
+//Buttons
+Button[] mapButtons = new Button[4];
+
+//view controls
+boolean textView = false;
 
 public void init() {
   super.init();
@@ -92,9 +101,20 @@ void setup(){
   category_colors.put(10, #FAF626);
   category_colors.put(11, #FA9F26);
   
-  v_map = loadImage("map.png");
+  v_map = loadImage("map_grayscale_yellow.png");
   float imageScale = v_map.height / text_messages.h;
   v_map.resize(Math.round(v_map.width/imageScale), Math.round(v_map.height/imageScale));
+  
+  //UI Buttons
+  float spacing = 10*scaleFactor;
+  float buttonWidth = text_messages.w - v_map.width - 2*spacing;
+  float buttonHeight = (text_messages.h - 5 * spacing) / mapButtons.length;
+  for (int i = 0; i < mapButtons.length; ++i){
+    mapButtons[i] = new Button("Text" + i, text_messages.left + v_map.width + spacing, text_messages.top + spacing*(i+1) + buttonHeight*i, text_messages.left + v_map.width + spacing + buttonWidth, text_messages.top + spacing*(i+1) + buttonHeight*(i+1), 2*scaleFactor, 240, 40);
+  }
+  
+  
+  
   
   font = createFont("Helvetica", 48);
   textFont(font);
@@ -107,19 +127,15 @@ void setup(){
 void draw(){
   background(bg_color);
   strokeWeight(scaleFactor);
-  if(false){
+  if(textView){
     text_messages.drawF();
   }
   else{
     image(v_map, text_messages.left, text_messages.top);
     fill(#360D0C);
     rect(text_messages.left + v_map.width, text_messages.top, text_messages.left + text_messages.w, text_messages.bottom);
-    float spacing = 10*scaleFactor;
-    float buttonWidth = text_messages.w - v_map.width - 2*spacing;
-    float buttonHeight = (text_messages.h - 5 * spacing) / 4;
-    for (int i = 0; i < 4; ++i){
-      fill(240);
-      rect(text_messages.left + v_map.width + spacing, text_messages.top + spacing*(i+1) + buttonHeight*i, text_messages.left + v_map.width + spacing + buttonWidth, text_messages.top + spacing*(i+1) + buttonHeight*(i+1), 2*scaleFactor);
+    for (int i = 0; i < mapButtons.length; ++i){
+      mapButtons[i].drawIt();
     }
     //Weather
     //Population
@@ -179,6 +195,12 @@ void touchDown(int ID, float xPos, float yPos, float xWidth, float yWidth){
   timeline.moving = timeline.touched(xPos, yPos);
   timeline_sub.moving = timeline_sub.touched(xPos, yPos);
   text_messages.moving = text_messages.touched(xPos, yPos);
+  
+  if(textView == false){
+    if(mapButtons[3].touched(xPos, yPos)){
+      textView = true;
+    }
+  }
   // Add a new touch ID to the list
 //  Touch t = new Touch( ID, xPos, yPos, xWidth, yWidth );
 //  touchList.put(ID,t);

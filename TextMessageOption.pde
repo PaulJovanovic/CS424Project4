@@ -1,4 +1,6 @@
 public class TextMessageOption extends FlickableOption {
+  Button mapButton;
+  Button moreButton;
   public TextMessageOption(String d, int i, ArrayList<String> e) {
     super(d, i, e);
   }
@@ -9,23 +11,23 @@ public class TextMessageOption extends FlickableOption {
     
     //drawTextMessageMenu();
     fill(bg);
-    textAlign(CENTER);
-    textSize(h/4);
     float menuLeft = left + v_map.width;
     float menuWidth = w - v_map.width;
+    float spacing = 10 * scaleFactor;
     rect(menuLeft, top, menuLeft + menuWidth, top+h);
-    fill(200);
-    float spacing = 10* scaleFactor;
-    float menuButtonWidth = (menuWidth - 3*spacing)/2;
-    float menuButtonLeft = menuLeft + spacing;
-    rect(menuButtonLeft, top + spacing, menuButtonLeft + menuButtonWidth, top+h-spacing, 2*scaleFactor);
-    fill(40);
-    text("Map", menuButtonLeft + menuButtonWidth / 2, top+3*h/5);
-    fill(200);
-    menuButtonLeft = menuButtonLeft + spacing + menuButtonWidth;
-    rect(menuButtonLeft, top + spacing, menuButtonLeft + menuButtonWidth, top+h-spacing, 2*scaleFactor);
-    fill(40);
-    text("More", menuButtonLeft + menuButtonWidth / 2, top+3*h/5);
+    if(mapButton == null){
+      float menuButtonWidth = (menuWidth - 3*spacing)/2;
+      float menuButtonLeft = menuLeft + spacing;
+      mapButton = new Button("Map", menuButtonLeft, top + spacing, menuButtonLeft + menuButtonWidth, top+h-spacing, 2*scaleFactor, 240, 40);
+      menuButtonLeft = menuButtonLeft + spacing + menuButtonWidth;
+      moreButton = new Button("More", menuButtonLeft, top + spacing, menuButtonLeft + menuButtonWidth, top+h-spacing, 2*scaleFactor, 240, 40);
+    }
+    mapButton.top = top+spacing;
+    mapButton.bottom = top+h-spacing;
+    moreButton.top = top+spacing;
+    moreButton.bottom = top+h-spacing;
+    mapButton.drawIt();
+    moreButton.drawIt();
     
     textAlign(LEFT);
     textSize(h/5);
