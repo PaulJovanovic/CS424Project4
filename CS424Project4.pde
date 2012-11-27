@@ -1,5 +1,17 @@
+import org.gicentre.utils.colour.*;
+import org.gicentre.utils.io.*;
+import org.gicentre.utils.gui.*;
+import org.gicentre.utils.move.*;
+import org.gicentre.utils.multisketch.*;
+import org.gicentre.utils.stat.*;
+import org.gicentre.utils.*;
+import org.gicentre.utils.network.*;
+import org.gicentre.utils.spatial.*;
+import org.gicentre.utils.geom.*;
+
 import hypermedia.net.*;
 import omicronAPI.*;
+import processing.net.*;
 
 final static int WALLWIDTH = 8160;
 final static int WALLHEIGHT = 2304;
@@ -8,6 +20,8 @@ OmicronAPI omicronManager;
 TouchListener touchListener;
 PApplet applet;
 boolean displayOnWall = false;
+
+DatabaseAdapter DB;
 
 float scaleFactor;
 int dWidth, dHeight;
@@ -40,11 +54,21 @@ Button[] mapButtons = new Button[4];
 //view controls
 boolean textView = false;
 
+//Graph
+XYChart lineChart;
+
+ArrayList<String> dates;
+ArrayList<String> messageIds;
+ArrayList<String> messageDetails;
+TextMessage tx;
+
+
 public void init() {
   super.init();
   omicronManager = new OmicronAPI(this);      
   if(displayOnWall) {
       omicronManager.setFullscreen(true);
+      omicronManager.ConnectToTracker(7001, 7340, "131.193.77.159");
   }
 }
 
@@ -57,9 +81,8 @@ void setup(){
   applet = this;
   touchListener = new TouchListener();
   omicronManager.setTouchListener(touchListener);
-  if(displayOnWall) {    
-    omicronManager.ConnectToTracker(7001, 7340, "131.193.77.159");
-  }
+  DB = new DatabaseAdapter(this, "root", "root", "project4", "localhost:3306");
+  loadData();
   
   ArrayList<TimelineOption> something = new ArrayList<TimelineOption>();
   ArrayList<String> somethingElse = new ArrayList<String>();
@@ -114,6 +137,16 @@ void setup(){
   }
   
   
+  int maxY = max(new int[] {1,2,3,4,5,6,7,8,9,10});
+  
+  lineChart = new XYChart(this);
+  lineChart.setData(new float[] {1,2,3,4,5,6,7,8,9,10}, new float[]{1,2,3,4,5,6,7,8,9,10});
+  lineChart.setMinY(0);
+  lineChart.setMaxY(maxY);
+  //lineChart.setYFormat("$###,###");  // Monetary value in $US
+  lineChart.setPointSize(scaleFactor);
+  lineChart.setLineWidth(scaleFactor);
+  
   
   
   font = createFont("Helvetica", 48);
@@ -148,17 +181,26 @@ void draw(){
   rect(text_messages.left-scaleFactor, text_messages.bottom, text_messages.right+scaleFactor, dHeight);
   strokeWeight(scaleFactor);
   drawTimeline();
+//  drawWord();
+//  drawKeyBoard();
   omicronManager.process();
 }
 
 void drawTimeline(){
   timeline.drawF();
-  drawTimelineSub();
+  //drawTimelineSub();
   drawWordlist();
+  drawGraph();
 }
 
 void drawTimelineSub(){
   timeline_sub.drawF();
+}
+
+void drawGraph(){
+  fill(#1F2224);
+  rect(timeline.left - 300 * scaleFactor, 0, timeline.left, 3*dHeight/8);
+  lineChart.draw(timeline.left - 300 * scaleFactor, 0, 300*scaleFactor, 3*dHeight/8);
 }
 
 void drawWordlist(){
@@ -186,6 +228,43 @@ void drawWordlist(){
     text(i + "",textX + padding, textY + 2*(rectHeight)/3);
     textXOffset = textXOffset + spacing + padding*2 +tw;
   }
+}
+
+public void loadData() {
+  println("Getting years...");
+  dates = DB.getDates();
+  println("Years complete");
+  for(int i = 0; i < dates.size(); i++){
+    println(dates.get(i));
+  }
+  
+  println("Getting message IDs...");
+  messageIds = DB.getMessageIdsForWord("sick");
+  println("Message IDs complete");
+  
+//  println("Getting message IDs...");
+//  messageIds = DB.getMessageIds("5/20/2011", "sick");
+//  println("Message IDs complete");
+//  println(messageIds.get(0));
+//  println(messageIds.size());
+//  
+//  println("Getting message IDs...");
+//  messageIds = DB.getMessageIds("3");
+//  println("Message IDs complete");
+//  println(messageIds.get(2));
+//  
+  println("Getting message details...");
+  for(int i = 0; i < messageIds.size(); i++){
+    tx = DB.getMessageDetails(messageIds.get(i));
+    println(tx.date);
+    println(tx.time);
+    println(tx.location);
+    println(tx.content);
+    println(tx.latitude);
+    println(tx.longitude);
+  }
+  println("Message details complete");
+
 }
 
 void touchDown(int ID, float xPos, float yPos, float xWidth, float yWidth){
