@@ -15,13 +15,11 @@ public class TextMessageOption extends FlickableOption {
     float menuWidth = w - v_map.width;
     float spacing = 10 * scaleFactor;
     rect(menuLeft, top, menuLeft + menuWidth, top+h);
-    if(mapButton == null){
-      float menuButtonWidth = (menuWidth - 3*spacing)/2;
-      float menuButtonLeft = menuLeft + spacing;
-      mapButton = new Button("Map", menuButtonLeft, top + spacing, menuButtonLeft + menuButtonWidth, top+h-spacing, 2*scaleFactor, 240, 40);
-      menuButtonLeft = menuButtonLeft + spacing + menuButtonWidth;
-      moreButton = new Button("More", menuButtonLeft, top + spacing, menuButtonLeft + menuButtonWidth, top+h-spacing, 2*scaleFactor, 240, 40);
-    }
+    float menuButtonWidth = (menuWidth - 3*spacing)/2;
+    float menuButtonLeft = menuLeft + spacing;
+    mapButton = new Button("Map", menuButtonLeft, top + spacing, menuButtonLeft + menuButtonWidth, top+h-spacing, 2*scaleFactor, 240, 40);
+    menuButtonLeft = menuButtonLeft + spacing + menuButtonWidth;
+    moreButton = new Button("More", menuButtonLeft, top + spacing, menuButtonLeft + menuButtonWidth, top+h-spacing, 2*scaleFactor, 240, 40);
     mapButton.top = top+spacing;
     mapButton.bottom = top+h-spacing;
     moreButton.top = top+spacing;
@@ -32,18 +30,36 @@ public class TextMessageOption extends FlickableOption {
     textAlign(LEFT);
     textSize(h/5);
     fill(240);
-    text("When is ribbon cutting on Grand Ave Project? Should be done about now. (WHAT??? HAVEN'T LAID A BRICK?) Way to go Jan Perry & County Supe", left + menuWidth + 10 * scaleFactor, top + h/5, left + v_map.width - 10 * scaleFactor, top + h);
-    textSize(h/2);
+    text("" + listing.get(3), left + menuWidth + 10 * scaleFactor, top + h/5, left + v_map.width - 10 * scaleFactor, top + h);
+    textSize(h/3);
     fill(bg);
     rect(left, top, left + menuWidth, top + h);
     fill(240);
-    text("#" + display, left + spacing, top + h/2);
+    text("#" + listing.get(0), left + spacing, top + h/2);
     textSize(h/4);
     fill(200);
-    text("Date: " + display, left + spacing, top + 7*h/8);
+    text("" + listing.get(2), left + spacing, top + 7*h/8);
     fill(#136EAB);
-    for(int i = 0; i < listing.size() && i < 23; i++){
-      rect(left + h/4 + i*h/4, top + 5*h/8, left + h/2 + i*h/4, top + 7*h/8);
+  }
+  
+  public boolean buttonsTouched(float xPos, float yPos){
+    println(mapButton == null);
+    if(mapButton == null || moreButton == null){
+      return false;
+    }
+    if(mapButton.touched(xPos, yPos)){
+      //listing of the message coordinates
+      currentLocation = listing.get(4).toString();
+      textView = !textView;
+      return true;
+    }
+    else if(moreButton.touched(xPos, yPos)){
+      //search for all written by that user
+      updateTextsByUser(listing.get(0).toString());
+      return true;
+    }
+    else{
+      return false;
     }
   }
 }

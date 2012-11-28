@@ -83,7 +83,12 @@ public class Flickable {
     for (int i = 0; i < elements.size(); i++){
       if(elementsTop.get(i) > top - rectHeight && elementsTop.get(i) < bottom){
         if(dist(left, elementsTop.get(i), left, top) < rectHeight/2){
-          selected = i;
+          if (selected != i){
+            selected = i;
+            if(elements.get(i) instanceof TimelineOption){
+              updateTexts();
+            }
+          }
         }
         boolean currentOption = false;
         if(i == selected){

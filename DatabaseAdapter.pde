@@ -70,6 +70,17 @@ class DatabaseAdapter {
    return result; 
   }
   
+  //Get all messageIds for given personId
+  public ArrayList<String> getWordsFromDate(String date)
+  {
+    ArrayList<String> result = new ArrayList<String>();
+    msql.query("SELECT word, count FROM `"+date+"` LIMIT 100");
+    while(msql.next()) {
+      result.add(msql.getString("word"));
+      result.add(""+msql.getInt("count"));
+    } 
+   return result; 
+  }
 //  public ArrayList<String> getMessageDetails(String messageId)
 //  {
 //    ArrayList<String> result = new ArrayList<String>();
@@ -89,14 +100,16 @@ class DatabaseAdapter {
     String time = "";
     String location = "";
     String content = "";
-    msql.query("select DATE(STR_TO_DATE(createdAt, '%c/%e/%Y %T')) AS 'date', TIME(STR_TO_DATE(createdAt, '%c/%e/%Y %T')) AS 'time',location, text from info where messageId = '"+messageId+"'");
+    String personId = "";
+    msql.query("select personId, DATE(STR_TO_DATE(createdAt, '%c/%e/%Y %T')) AS 'date', TIME(STR_TO_DATE(createdAt, '%c/%e/%Y %T')) AS 'time',location, text from info where messageId = '"+messageId+"'");
     while(msql.next()) {
+      personId = msql.getString("personId");
       date = msql.getString("date");
       time = msql.getString("time");
       location = msql.getString("location");
       content = msql.getString("text");
     } 
-    result = new TextMessage(date, time, location, content);
+    result = new TextMessage(personId, date, time, location, content);
     return result; 
   }
   

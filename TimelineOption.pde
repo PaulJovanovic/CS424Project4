@@ -19,9 +19,11 @@ public class TimelineOption extends FlickableOption {
     textAlign(LEFT);
     textSize(h/2);
     fill(240);
-    text("Date: " + display, left + h/4, top + h*.7);
+    text(display, left + h/4, top + h*.7);
     stroke(stroke_color);
-    warning.drawIt();
+    if(messages.get(display).size() > (avgY + stdY)){
+      warning.drawIt();
+    }
 //    for(int i = 0; i < listing.size() && i < 12; i++){
 //      if(timeline_sub.selected != i){
 //        stroke(stroke_color);

@@ -5,8 +5,10 @@ class TextMessage {
   public float longitude = 0;
   public String location = "";
   public String content = "";
+  public String personId = "";
  
-  public TextMessage(String date, String time, String location, String content) {
+  public TextMessage(String personId, String date, String time, String location, String content) {
+    this.personId = personId;
     this.date = date;
     this.time = time;
     this.location = location;

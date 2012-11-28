@@ -30,7 +30,7 @@ public class Button{
   }
   
   public void bigFont(){
-    this.fontScale = 4;
+    this.fontScale = 3.2;
   }
   
   public boolean touched(float xPos, float yPos){
