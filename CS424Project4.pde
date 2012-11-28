@@ -322,6 +322,11 @@ public void loadData() {
   timeline_sub = new Flickable(timelineOptionSub, timeline.left - 300 * scaleFactor, 0, timeline.left, 3*dHeight/8, 4f, #1F2224);
 
   word_list = new Flickable(new ArrayList<WordListOption>(), timeline.left - 300 * scaleFactor, timeline_sub.bottom + 90*scaleFactor, timeline.left, dHeight, 4f, #1F2224);
+  
+  ArrayList wordlist = DB.getWordsFromDate(dates.get(timeline.selected + 1));
+  for(int i = 0; i < wordlist.size(); i+=2){
+    word_list.addElement(new WordListOption(wordlist.get(i).toString(), Integer.parseInt(wordlist.get(i+1).toString()), new ArrayList<String>()));
+  }
 
   updateData();
 }
