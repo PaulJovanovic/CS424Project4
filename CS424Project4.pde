@@ -129,7 +129,7 @@ void setup(){
   float buttonWidth = text_messages.w - v_map.width - 2*spacing;
   float buttonHeight = (text_messages.h - 5 * spacing) / mapButtons.length;
   for (int i = 0; i < mapButtons.length; ++i){
-    mapButtons[i] = new Button("Text" + i, text_messages.left + v_map.width + spacing, text_messages.top + spacing*(i+1) + buttonHeight*i, text_messages.left + v_map.width + spacing + buttonWidth, text_messages.top + spacing*(i+1) + buttonHeight*(i+1), 2*scaleFactor, 240, 40);
+    mapButtons[i] = new Button("Text" + i, text_messages.left + v_map.width + spacing, text_messages.top + spacing, text_messages.left + v_map.width + spacing + buttonWidth, text_messages.top + spacing + buttonHeight, 2*scaleFactor, 240, 40);
   }
   mapButtons[0].label = "Population";
   mapButtons[1].label = "Weather";
@@ -167,9 +167,10 @@ void draw(){
     image(v_map, text_messages.left, text_messages.top);
     fill(#360D0C);
     rect(text_messages.left + v_map.width, text_messages.top, text_messages.left + text_messages.w, text_messages.bottom);
-    for (int i = 0; i < mapButtons.length; ++i){
-      mapButtons[i].drawIt();
-    }
+//    for (int i = 0; i < mapButtons.length; ++i){
+//      mapButtons[i].drawIt();
+//    }
+    mapButtons[3].drawIt();
     drawPoints();
     drawPoint();
     //Weather
