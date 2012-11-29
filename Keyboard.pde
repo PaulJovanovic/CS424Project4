@@ -1,7 +1,7 @@
 public class Keyboard{
   float left, right, top, bottom, w, h, rectHeight;
   ArrayList<Button> keys = new ArrayList<Button>();
-  String[] letters = {"q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l","#","z","x","c","v","b","n","m","<--"};
+  String[] letters = {"1","2","3","4","5","6","7","8","9","0","q","w","e","r","t","y","u","i","o","p","a","s","d","f","g","h","j","k","l","#","z","x","c","v","b","n","m","<--"};
   
   public Keyboard(float l, float t, float r, float b){
     this.left = l;

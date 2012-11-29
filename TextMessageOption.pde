@@ -43,7 +43,6 @@ public class TextMessageOption extends FlickableOption {
   }
   
   public boolean buttonsTouched(float xPos, float yPos){
-    println(mapButton == null);
     if(mapButton == null || moreButton == null){
       return false;
     }

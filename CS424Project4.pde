@@ -143,7 +143,7 @@ void setup(){
   wordListButton = new Button("Words", wordButton.right - wordButton.w/2 + 5*scaleFactor, wordButton.bottom + 10 * scaleFactor, wordButton.right, wordButton.bottom + 40*scaleFactor, 2*scaleFactor, timeline_sub.bg, 240);
   wordListButton.bigFont();
   
-  kb = new Keyboard(timeline_sub.left, wordListButton.bottom + 35 * scaleFactor, timeline.left, dHeight);
+  kb = new Keyboard(timeline_sub.left, wordListButton.bottom + 20 * scaleFactor, timeline.left, dHeight);
   
   xChangePixels = v_map.width;
   yChangePixels = text_messages.bottom - text_messages.top;
